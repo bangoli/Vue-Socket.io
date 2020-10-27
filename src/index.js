@@ -17,9 +17,16 @@ export default class VueSocketIO {
 
         Logger.debug = debug;
         this.io = this.connect(connection, options);
-        this.emitter = new Emitter(vuex);
-        this.listener = new Listener(this.io, this.emitter);
 
+        // change for init later
+        if (this.io) {
+            this.emitter = new Emitter(vuex);
+            this.listener = new Listener(this.io, this.emitter);
+        } else {
+            this.initSocket.connection = connection;
+            this.initSocket.vuex = vuex;
+            this.initSocket.options = options;
+        }
     }
 
     /**
@@ -34,6 +41,21 @@ export default class VueSocketIO {
 
         Logger.info('Vue-Socket.io plugin enabled');
 
+    }
+
+    /**
+     * install io, modif by bango
+     */
+    initSocket() {
+        if (!this.io) {
+            this.io = SocketIO(this.initSocket.connection, this.initSocket.options);
+            this.emitter = new Emitter(this.initSocket.vuex);
+            this.listener = new Listener(this.io, this.emitter);
+            this.initSocket.connection = null;
+            this.initSocket.vuex = null;
+            this.initSocket.options = null;
+        }
+        return this.io
     }
 
 
@@ -54,8 +76,8 @@ export default class VueSocketIO {
 
             Logger.info('Received connection string');
 
-            return this.io = SocketIO(connection, options);
-
+            // return this.io = SocketIO(connection, options);
+            return null
         } else {
 
             throw new Error('Unsupported connection type');

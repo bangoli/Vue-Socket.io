@@ -5,6 +5,12 @@ export default {
      */
     beforeCreate(){
 
+        if (!this.$options.sockets) {
+            return
+        }
+
+        this.$socket = this.$vueSocketIo.initSocket();
+
         if(!this.sockets) this.sockets = {};
 
         this.sockets.subscribe = (event, callback) => {
