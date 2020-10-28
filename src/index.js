@@ -74,14 +74,13 @@ export default class VueSocketIO {
 
         } else if(typeof connection === 'string'){
 
-            Logger.info('Received connection string..');
+            Logger.info('Received connection string...');
 
-            if (false) {
-                return this.io = SocketIO(connection, options);
-            }
-            return null
+            // return this.io = SocketIO(connection, options);
+            return null;
         } else {
 
+            Logger.info('connect err:', {connection, options});
             throw new Error('Unsupported connection type');
 
         }
