@@ -74,9 +74,11 @@ export default class VueSocketIO {
 
         } else if(typeof connection === 'string'){
 
-            Logger.info('Received connection string');
+            Logger.info('Received connection string..');
 
-            // return this.io = SocketIO(connection, options);
+            if (false) {
+                return this.io = SocketIO(connection, options);
+            }
             return null
         } else {
 
